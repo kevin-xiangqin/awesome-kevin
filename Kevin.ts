@@ -13,8 +13,8 @@ export default class Kevin {
 
     private static TudouKeyWord: char[] = ['冥', '奢', '梵', '呐', '俱', '哆', '怯', '諳', '罰', '侄', '缽', '皤'];
     private static TudouChar: char[] = [
-        '大', '家', '盛', '情', '难', '却', '，', '怎', '么', '办', '@', 'a', 'y', '我', '们', '去', 
-        '淘', '宝', '领', '个', '证', '0', '后', '程', '序', '员', '不', '会', '写', '代', '码', 'C', 
+        '大', '家', '盛', '情', '难', '却', '，', '怎', '么', '办', '@', 'a', 'y', '我', '们', '去',
+        '淘', '宝', '领', '个', '证', '0', '后', '程', '序', '员', '不', '会', '写', '代', '码', 'C',
         'T', 'O', '1', '次', '相', '亲', '就', '成', '功', '的', '话', '有', 'B', 'U', 'G', '沙',
         '伊', '隸', '麼', '遮', '闍', '度', '蒙', '孕', '薩', '夷', '迦', '他', '姪', '豆', '特', '逝',
         '朋', '輸', '楞', '栗', '寫', '數', '曳', '諦', '羅', '曰', '咒', '即', '密', '若', '般', '故',
@@ -69,10 +69,21 @@ export default class Kevin {
         const EncodeArray: number[] = Kevin.ToBytes(EncodeText);
         const decipher = crypto.createDecipheriv("aes-256-cbc", Kevin.key, Kevin.vector);
         const EncodeBuffer = new Uint8Array(Buffer.from(EncodeArray));
-        const DecodeBuff = Buffer.concat([
-            decipher.update(EncodeBuffer),
-            decipher.final()
-        ]);
-        return iconvlite.decode(DecodeBuff, "UTF-16LE");
+        try {
+            const DecodeBuff = Buffer.concat([
+                decipher.update(EncodeBuffer),
+                decipher.final()
+            ]);
+            return iconvlite.decode(DecodeBuff, "UTF-16LE");
+        } catch (error) {
+            console.log(`TudouChar数组长度`,Kevin.TudouChar.length);
+            const set = new Set(Kevin.TudouChar);
+            console.log(`set长度:`,set.size);
+
+            if(Kevin.TudouChar.length > set.size){
+                console.log(`哪个天才提交的TudouChar有重复了`);
+            }
+            throw error;
+        }
     }
 }
