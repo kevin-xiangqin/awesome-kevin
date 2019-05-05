@@ -6,15 +6,15 @@ type char = string;
 
 const randomNumber = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 const randomItemFromArray = <T>(arr: Array<T>): T => arr[randomNumber(0, arr.length - 1)];
-export const TudouChar: char[] = [
+const TudouChar: char[] = [
     '大', '家', '盛', '情', '难', '却', '，', '怎', '么', '办', '@', 'a', 'y', '我', '们', '去',
     '淘', '宝', '领', '个', '证', '0', '后', '程', '序', '员', '不', '会', '写', '代', '码', 'C',
     'T', 'O', '1', '次', '相', '亲', '就', '成', '功', '的', '话', '有', 'B', 'U', 'G', '沙',
     '伊', '隸', '麼', '遮', '闍', '度', '蒙', '孕', '薩', '夷', '迦', '他', '姪', '豆', '特', '逝',
     '朋', '輸', '楞', '栗', '寫', '數', '曳', '諦', '羅', '曰', '咒', '即', '密', '若', '般', '故',
-    '不', '實', '真', '訶', '切', '一', '除', '能', '等', '是', '上', '明', '大', '神', '知', '三',
+    '门', '實', '真', '訶', '切', '一', '除', '能', '等', '是', '上', '明', '厦', '神', '知', '三',
     '藐', '耨', '得', '依', '諸', '世', '槃', '涅', '竟', '究', '想', '夢', '倒', '顛', '離', '遠',
-    '怖', '恐', '有', '礙', '心', '所', '以', '亦', '智', '道', '。', '集', '盡', '死', '老', '至'
+    '怖', '恐', '癔', '礙', '心', '所', '以', '亦', '智', '道', '。', '集', '盡', '死', '老', '至'
 ];
 
 export default class Kevin {
@@ -84,7 +84,7 @@ export default class Kevin {
                 console.log(`哪个天才提交的TudouChar有重复了`);
                 for (let i in TudouChar) {
                     if (TudouChar.indexOf(TudouChar[i]) != TudouChar.lastIndexOf(TudouChar[i])) {
-                        console.log("下标为："+i);
+                        console.log("下标为：" + i);
                         console.log("数组中有重复元素：" + TudouChar[i]);
                     }
                 }
