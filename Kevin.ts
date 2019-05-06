@@ -48,8 +48,10 @@ export default class Kevin {
         const originalBuffer = new Uint8Array(unicodeBuf);
         // use aes-256-cbc
         const cipher = crypto.createCipheriv("aes-256-cbc", Kevin.key, Kevin.vector);
-        cipher.update(originalBuffer);
-        const encodeBuffer = cipher.final();
+        const encodeBuffer = Buffer.concat([
+            cipher.update(originalBuffer),
+            cipher.final()
+        ])
         let TudouString: string = "";
         for (let i = 0; i < encodeBuffer.length; i++) {
             const byte: number = encodeBuffer[i];
