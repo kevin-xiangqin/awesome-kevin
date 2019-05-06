@@ -88,38 +88,21 @@ export default class Kevin {
         const EncodeArray: number[] = Kevin.ToBytes(EncodeText);
         const decipher = crypto.createDecipheriv("aes-256-cbc", Kevin.key, Kevin.vector);
         const EncodeBuffer = Buffer.from(EncodeArray);
-        try {
-            const DecodeBuff = Buffer.concat([
-                decipher.update(EncodeBuffer),
-                decipher.final()
-            ]);
-            return iconvlite.decode(DecodeBuff, "UTF-16LE");
-        } catch (error) {
-            console.log(`TudouChar数组长度`, TudouChar.length);
-            const set = new Set(TudouChar);
-            console.log(`set长度:`, set.size);
-
-            if (TudouChar.length > set.size) {
-                console.log(`哪个天才提交的TudouChar有重复了`);
-                for (let i in TudouChar) {
-                    if (TudouChar.indexOf(TudouChar[i]) != TudouChar.lastIndexOf(TudouChar[i])) {
-                        console.log("下标为：" + i);
-                        console.log("数组中有重复元素：" + TudouChar[i]);
-                    }
-                }
-            }
-            throw error;
-        }
+        const DecodeBuff = Buffer.concat([
+            decipher.update(EncodeBuffer),
+            decipher.final()
+        ]);
+        return iconvlite.decode(DecodeBuff, "UTF-16LE");
     }
 
     public static use(mode: Mode): void;
     public static use(mode: char[]): void;
     public static use(mode): void {
         // 动态替换所以要动态校验
-        if(mode === Mode.Ayaa){
+        if (mode === Mode.Ayaa) {
             // 不要直接写TudouChar = sweetCharList 还是按程序走执行下校验
             return Kevin.use(sweetCharList);
-        }else if(Array.isArray(mode) && mode.every(s=>typeof s === "string" && s.length === 1)){
+        } else if (Array.isArray(mode) && mode.every(s => typeof s === "string" && s.length === 1)) {
             // 验证数组里有没有重复字
             const set = new Set(TudouChar);
             if (TudouChar.length > set.size) {
@@ -134,7 +117,7 @@ export default class Kevin {
                 throw new Error(`哪个天才提交的TudouChar有重复了`);
             }
             TudouChar = mode;
-        }else{
+        } else {
             throw new Error(`醒醒，参数必须是枚举值或者Array<Char>`);
         }
     }
