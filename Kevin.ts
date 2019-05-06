@@ -102,7 +102,7 @@ export default class Kevin {
         if (mode === Mode.Ayaa) {
             // 不要直接写TudouChar = sweetCharList 还是按程序走执行下校验
             return Kevin.use(sweetCharList);
-        } else if (Array.isArray(mode) && mode.every(s => typeof s === "string" && s.length === 1)) {
+        } else if (Array.isArray(mode) && mode.length === DefalutTudouChar.length && mode.every(s => typeof s === "string" && s.length === 1)) {
             // 验证数组里有没有重复字
             const set = new Set(TudouChar);
             if (TudouChar.length > set.size) {
@@ -118,7 +118,7 @@ export default class Kevin {
             }
             TudouChar = mode;
         } else {
-            throw new Error(`醒醒，参数必须是枚举值或者Array<Char>`);
+            throw new Error(`醒醒，参数必须是枚举值或者Array<Char>且char不可重复且暂时要求数组长度和默认值一样即128`);
         }
     }
 }
