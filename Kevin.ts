@@ -31,7 +31,7 @@ const sweetCharList: char[] = [
 // 类身上的use方法来修改TudouChar
 let TudouChar: char[] = DefalutTudouChar;
 
-enum Mode {
+export enum Mode {
     Ayaa = "Ayaa",
 };
 
@@ -117,9 +117,25 @@ export default class Kevin {
     public static use(mode): void {
         // 动态替换所以要动态校验
         if(mode === Mode.Ayaa){
-
+            // 不要直接写TudouChar = sweetCharList 还是按程序走执行下校验
+            return Kevin.use(sweetCharList);
+        }else if(Array.isArray(mode) && mode.every(s=>typeof s === "string" && s.length === 1)){
+            // 验证数组里有没有重复字
+            const set = new Set(TudouChar);
+            if (TudouChar.length > set.size) {
+                console.log(`TudouChar数组长度`, TudouChar.length);
+                console.log(`set长度:`, set.size);
+                for (let i in TudouChar) {
+                    if (TudouChar.indexOf(TudouChar[i]) != TudouChar.lastIndexOf(TudouChar[i])) {
+                        console.log("下标为：" + i);
+                        console.log("数组中有重复元素：" + TudouChar[i]);
+                    }
+                }
+                throw new Error(`哪个天才提交的TudouChar有重复了`);
+            }
+            TudouChar = mode;
         }else{
-
+            throw new Error(`醒醒，参数必须是枚举值或者Array<Char>`);
         }
     }
 }
