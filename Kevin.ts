@@ -1,12 +1,12 @@
-import * as iconvlite from "iconv-lite";
-import * as crypto from "crypto";
+import * as iconvlite from 'iconv-lite';
+import * as crypto from 'crypto';
 
 // 看到char自觉。。。byte实在编不出来
 type char = string;
 
-const randomNumber = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
+const randomNumber: Function = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 const randomItemFromArray = <T>(arr: Array<T>): T => arr[randomNumber(0, arr.length - 1)];
-const DefalutTudouChar: char[] = [
+const defalutTudouChar: char[] = [
     '滅', '苦', '婆', '娑', '耶', '陀', '跋', '多', '漫', '都', '殿', '悉', '夜', '爍', '帝', '吉',
     '利', '阿', '無', '南', '那', '怛', '喝', '羯', '勝', '摩', '伽', '謹', '波', '者', '穆', '僧',
     '室', '藝', '尼', '瑟', '地', '彌', '菩', '提', '蘇', '醯', '盧', '呼', '舍', '佛', '參', '沙',
@@ -29,30 +29,30 @@ const sweetCharList: char[] = [
 ];
 
 // 类身上的use方法来修改TudouChar
-let TudouChar: char[] = DefalutTudouChar;
+let tudouChar: char[] = defalutTudouChar;
 
 export enum Mode {
-    Ayaa = "Ayaa",
-};
+    Ayaa = 'Ayaa'
+}
 
 export default class Kevin {
-    private static key: string = "XDXDtudou@KeyFansClub^_^Encode!!";
-    private static vector: string = "Potato@Key@_@=_=";
+    private static key: string = 'XDXDtudou@KeyFansClub^_^Encode!!';
+    private static vector: string = 'Potato@Key@_@=_=';
 
-    private static TudouKeyWord: char[] = ['冥', '奢', '梵', '呐', '俱', '哆', '怯', '諳', '罰', '侄', '缽', '皤'];
+    private static tudouKeyWord: char[] = ['冥', '奢', '梵', '呐', '俱', '哆', '怯', '諳', '罰', '侄', '缽', '皤'];
 
-    public static ToBytes(TudouString: string): number[] {
-        const TudouKeyWordList: char[] = Kevin.TudouKeyWord;
-        const TudouCharList: char[] = TudouChar;
-        const encodeBuffer: number[] = Array(TudouString.length).fill(0);
+    public static toBytes(tudouString: string): number[] {
+        const tudouKeyWordList: char[] = Kevin.tudouKeyWord;
+        const tudouCharList: char[] = tudouChar;
+        const encodeBuffer: number[] = Array(tudouString.length).fill(0);
 
         let j: number = 0;
-        for (let i = 0; i < TudouString.length; i++ , j++) {
-            if (TudouKeyWordList.includes(TudouString[i])) {
-                encodeBuffer[j] = TudouCharList.indexOf(TudouString[i + 1]) ^ 0x80;
+        for (let i = 0; i < tudouString.length; i++ , j++) {
+            if (tudouKeyWordList.includes(tudouString[i])) {
+                encodeBuffer[j] = tudouCharList.indexOf(tudouString[i + 1]) ^ 0x80;
                 i++;
             } else {
-                encodeBuffer[j] = TudouCharList.indexOf(TudouString[i]);
+                encodeBuffer[j] = tudouCharList.indexOf(tudouString[i]);
             }
         }
 
@@ -60,39 +60,39 @@ export default class Kevin {
         return trimedBuffer;
     }
 
-    public static Encode(OriginalString: string): string {
+    public static encode(originalString: string): string {
         // 按小端解
-        const originalBuffer = iconvlite.encode(OriginalString, "UTF-16LE");
+        const originalBuffer = iconvlite.encode(originalString, 'UTF-16LE');
         // use aes-256-cbc
-        const cipher = crypto.createCipheriv("aes-256-cbc", Kevin.key, Kevin.vector);
+        const cipher = crypto.createCipheriv('aes-256-cbc', Kevin.key, Kevin.vector);
         const encodeBuffer = Buffer.concat([
             cipher.update(originalBuffer),
             cipher.final()
         ]);
-        let TudouString: string = "";
+        let tudouString: string = '';
         for (let i = 0; i < encodeBuffer.length; i++) {
             const byte: number = encodeBuffer[i];
             if (byte >= 0x80) {
-                TudouString += randomItemFromArray(Kevin.TudouKeyWord);
-                TudouString += TudouChar[byte ^ 0x80];
+                tudouString += randomItemFromArray(Kevin.tudouKeyWord);
+                tudouString += tudouChar[byte ^ 0x80];
             } else {
-                TudouString += TudouChar[byte];
+                tudouString += tudouChar[byte];
             }
         }
 
-        return TudouString;
+        return tudouString;
     }
 
-    public static Decode(EncodeText: string) {
-        EncodeText = EncodeText.replace(/^Kevin港：/, "");
-        const EncodeArray: number[] = Kevin.ToBytes(EncodeText);
-        const decipher = crypto.createDecipheriv("aes-256-cbc", Kevin.key, Kevin.vector);
-        const EncodeBuffer = Buffer.from(EncodeArray);
-        const DecodeBuff = Buffer.concat([
-            decipher.update(EncodeBuffer),
+    public static decode(encodeText: string): string {
+        encodeText = encodeText.replace(/^Kevin港：/, '');
+        const encodeArray: number[] = Kevin.toBytes(encodeText);
+        const decipher = crypto.createDecipheriv('aes-256-cbc', Kevin.key, Kevin.vector);
+        const encodeBuffer = Buffer.from(encodeArray);
+        const decodeBuff = Buffer.concat([
+            decipher.update(encodeBuffer),
             decipher.final()
         ]);
-        return iconvlite.decode(DecodeBuff, "UTF-16LE");
+        return iconvlite.decode(decodeBuff, 'UTF-16LE');
     }
 
     public static use(mode: Mode): void;
@@ -102,21 +102,23 @@ export default class Kevin {
         if (mode === Mode.Ayaa) {
             // 不要直接写TudouChar = sweetCharList 还是按程序走执行下校验
             return Kevin.use(sweetCharList);
-        } else if (Array.isArray(mode) && mode.length === DefalutTudouChar.length && mode.every(s => typeof s === "string" && s.length === 1)) {
+        } else if (Array.isArray(mode) &&
+            mode.length === defalutTudouChar.length &&
+            mode.every(s => typeof s === 'string' && s.length === 1)) {
             // 验证数组里有没有重复字
-            const set = new Set(TudouChar);
-            if (TudouChar.length > set.size) {
-                console.log(`TudouChar数组长度`, TudouChar.length);
+            const set = new Set(tudouChar);
+            if (tudouChar.length > set.size) {
+                console.log(`tudouChar数组长度`, tudouChar.length);
                 console.log(`set长度:`, set.size);
-                for (let i in TudouChar) {
-                    if (TudouChar.indexOf(TudouChar[i]) != TudouChar.lastIndexOf(TudouChar[i])) {
-                        console.log("下标为：" + i);
-                        console.log("数组中有重复元素：" + TudouChar[i]);
+                for (const i in tudouChar) {
+                    if (tudouChar.indexOf(tudouChar[i]) !== tudouChar.lastIndexOf(tudouChar[i])) {
+                        console.log('下标为：' + i);
+                        console.log('数组中有重复元素：' + tudouChar[i]);
                     }
                 }
-                throw new Error(`哪个天才提交的TudouChar有重复了`);
+                throw new Error(`哪个天才提交的tudouChar有重复了`);
             }
-            TudouChar = mode;
+            tudouChar = mode;
         } else {
             throw new Error(`醒醒，参数必须是枚举值或者Array<Char>且char不可重复且暂时要求数组长度和默认值一样即128`);
         }
