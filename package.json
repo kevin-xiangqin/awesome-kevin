@@ -10,11 +10,17 @@
     "tslint-fix": "tslint --fix -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^12.0.0",
+    "husky": "^2.2.0",
     "ts-node": "8.0.3",
     "tslint": "^5.16.0"
   },
