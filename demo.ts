@@ -1,4 +1,4 @@
-import Kevin, { Mode } from './Kevin';
+import Kevin, { Mode } from './kevin';
 
 Kevin.use(Mode.Ayaa);
 
