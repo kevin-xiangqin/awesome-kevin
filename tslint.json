@@ -42,7 +42,7 @@
     "missing-optional-annotation": false,
     "no-arg": true,
     "no-any": true,
-    "no-bitwise": true,
+    "no-bitwise": false,
     "no-consecutive-blank-lines": true,
     "no-console": [
       true,
