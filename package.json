@@ -5,7 +5,8 @@
   "main": "Kevin.ts",
   "scripts": {
     "debug": "ts-node ./demo.ts",
-    "lint": "./node_modules/tslint/bin/tslint --project .",
+    "lint": "./node_modules/tslint/bin/tslint -p tsconfig.json",
+    "tslint-fix": "./node_modules/tslint/bin/tslint --fix -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
