@@ -1,8 +1,8 @@
 {
-  "name": "ts-Kevin-Buddha",
+  "name": "awesome-kevin",
   "version": "1.0.0",
   "description": "",
-  "main": "Kevin.ts",
+  "main": "kevin.ts",
   "scripts": {
     "debug": "ts-node ./demo.ts",
     "build": "tsc",
