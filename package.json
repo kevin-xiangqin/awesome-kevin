@@ -5,6 +5,7 @@
   "main": "Kevin.ts",
   "scripts": {
     "debug": "ts-node ./demo.ts",
+    "build": "tsc",
     "lint": "tslint -p tsconfig.json",
     "tslint-fix": "tslint --fix -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
