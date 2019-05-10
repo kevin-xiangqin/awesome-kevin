@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>example for Kevin's sweet words</title>
+    <script src="https://cdn.rawgit.com/ricmoo/aes-js/e27b99df/index.js"></script>
+</head>
+<body>
+    <script>
+        const key = aesjs.utils.utf8.toBytes('XDXDtudou@KeyFansClub^_^Encode!!');
+        const vector = aesjs.utils.utf8.toBytes('Potato@Key@_@=_=');
+
+        const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const randomItemFromArray = (arr) => arr[randomNumber(0, arr.length - 1)];
+        const defalutTudouChar = [
+            '滅', '苦', '婆', '娑', '耶', '陀', '跋', '多', '漫', '都', '殿', '悉', '夜', '爍', '帝', '吉',
+            '利', '阿', '無', '南', '那', '怛', '喝', '羯', '勝', '摩', '伽', '謹', '波', '者', '穆', '僧',
+            '室', '藝', '尼', '瑟', '地', '彌', '菩', '提', '蘇', '醯', '盧', '呼', '舍', '佛', '參', '沙',
+            '伊', '隸', '麼', '遮', '闍', '度', '蒙', '孕', '薩', '夷', '迦', '他', '姪', '豆', '特', '逝',
+            '朋', '輸', '楞', '栗', '寫', '數', '曳', '諦', '羅', '曰', '咒', '即', '密', '若', '般', '故',
+            '不', '實', '真', '訶', '切', '一', '除', '能', '等', '是', '上', '明', '大', '神', '知', '三',
+            '藐', '耨', '得', '依', '諸', '世', '槃', '涅', '竟', '究', '想', '夢', '倒', '顛', '離', '遠',
+            '怖', '恐', '有', '礙', '心', '所', '以', '亦', '智', '道', '。', '集', '盡', '死', '老', '至'
+        ];
+        let tudouChar = defalutTudouChar;
+
+        class Kevin {
+            static toBytes(text){
+                const tudouKeyWordList = Kevin.tudouKeyWord;
+                const tudouCharList = tudouChar;
+                const encodeBuffer = Array(text.length).fill(0);
+                let j = 0;
+                for (let i = 0; i < text.length; i++, j++) {
+                    if (tudouKeyWordList.includes(text[i])) {
+                        encodeBuffer[j] = tudouCharList.indexOf(text[i + 1]) ^ 0x80;
+                        i++;
+                    }
+                    else {
+                        encodeBuffer[j] = tudouCharList.indexOf(text[i]);
+                    }
+                }
+                const trimedBuffer = encodeBuffer.slice(0, j);
+                return trimedBuffer;
+            }
+
+            static encode(originalString){
+                const originalBuffer = aesjs.utils.utf8.toBytes(originalString);
+                // 补padding
+                const buf = aesjs.padding.pkcs7.pad(originalBuffer);
+                const aesCbc = new aesjs.ModeOfOperation.cbc(Kevin.key, Kevin.iv);
+                const encodeBuffer = aesCbc.encrypt(buf);
+
+                let tudouString = '';
+                for (let i = 0; i < encodeBuffer.length; i++) {
+                    const byte = encodeBuffer[i];
+                    if (byte >= 0x80) {
+                        tudouString += randomItemFromArray(Kevin.tudouKeyWord);
+                        tudouString += tudouChar[byte ^ 0x80];
+                    }
+                    else {
+                        tudouString += tudouChar[byte];
+                    }
+                }
+                return tudouString;
+            }
+
+            static decode(encodeText){
+                encodeText = encodeText.replace(/^佛曰：/, '');
+                const encodeArray = Kevin.toBytes(encodeText);
+                const aesCbc = new aesjs.ModeOfOperation.cbc(Kevin.key, Kevin.iv);
+                const decodeBuff = aesCbc.decrypt(encodeArray);
+
+                return aesjs.utils.utf8.fromBytes(aesjs.padding.pkcs7.strip(decodeBuff));
+            }
+        }
+
+        Kevin.key = aesjs.utils.utf8.toBytes('XDXDtudou@KeyFansClub^_^Encode!!');
+        Kevin.vector = aesjs.utils.utf8.toBytes('Potato@Key@_@=_=');
+        Kevin.tudouKeyWord = ['冥', '奢', '梵', '呐', '俱', '哆', '怯', '諳', '罰', '侄', '缽', '皤'];
+
+    </script>
+</body>
+</html>
