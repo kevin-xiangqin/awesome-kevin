@@ -106,14 +106,14 @@ export default class Kevin {
             mode.length === defalutTudouChar.length &&
             mode.every(s => typeof s === 'string' && s.length === 1)) {
             // 验证数组里有没有重复字
-            const set = new Set(tudouChar);
-            if (tudouChar.length > set.size) {
-                console.log(`tudouChar数组长度`, tudouChar.length);
-                console.log(`set长度:`, set.size);
-                for (const i in tudouChar) {
-                    if (tudouChar.indexOf(tudouChar[i]) !== tudouChar.lastIndexOf(tudouChar[i])) {
+            const set = new Set(mode);
+            if (0x80 > set.size) {
+                console.log(`tudouChar数组长度`, 0x80);
+                console.log(`传入的数组转set后长度:`, set.size);
+                for (const i in mode) {
+                    if (mode.indexOf(mode[i]) !== mode.lastIndexOf(mode[i])) {
                         console.log('下标为：' + i);
-                        console.log('数组中有重复元素：' + tudouChar[i]);
+                        console.log('数组中有重复元素：' + mode[i]);
                     }
                 }
                 throw new Error(`哪个天才提交的tudouChar有重复了`);
