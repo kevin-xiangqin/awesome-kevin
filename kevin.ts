@@ -69,16 +69,16 @@ export default class Kevin {
             cipher.update(originalBuffer),
             cipher.final()
         ]);
-        let tudouString: string = '';
-        for (let i = 0; i < encodeBuffer.length; i++) {
-            const byte: number = encodeBuffer[i];
+        const tudouString: string = encodeBuffer.reduce((result: string, buffer: number) => {
+            const byte: number = buffer;
             if (byte >= 0x80) {
-                tudouString += randomItemFromArray(Kevin.tudouKeyWord);
-                tudouString += tudouChar[byte ^ 0x80];
+                result += randomItemFromArray(Kevin.tudouKeyWord);
+                result += tudouChar[byte ^ 0x80];
             } else {
-                tudouString += tudouChar[byte];
+                result += tudouChar[byte];
             }
-        }
+            return result;
+        }, '')
 
         return tudouString;
     }
@@ -110,6 +110,12 @@ export default class Kevin {
             if (0x80 > set.size) {
                 console.log(`tudouChar数组长度`, 0x80);
                 console.log(`传入的数组转set后长度:`, set.size);
+                Object.entries(mode).forEach(([key, value]) => {
+                    if (mode.indexOf(value) !== mode.lastIndexOf(value)) {
+                        console.log('下标为：' + key);
+                        console.log('数组中有重复元素：' + value);
+                    }
+                })
                 for (const i in mode) {
                     if (mode.indexOf(mode[i]) !== mode.lastIndexOf(mode[i])) {
                         console.log('下标为：' + i);
