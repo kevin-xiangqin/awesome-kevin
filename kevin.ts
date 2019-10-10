@@ -78,7 +78,7 @@ export default class Kevin {
                 result += tudouChar[byte];
             }
             return result;
-        }, '')
+        }, '');
 
         return tudouString;
     }
@@ -115,7 +115,7 @@ export default class Kevin {
                         console.log('下标为：' + key);
                         console.log('数组中有重复元素：' + value);
                     }
-                })
+                });
                 throw new Error(`哪个天才提交的tudouChar有重复了`);
             }
             tudouChar = mode;
